@@ -1284,8 +1284,8 @@ end
 --Stepanovich's code starts again below.
 do
 	sanitizeModule('os')
-	sanitizeModule('io')
-	sanitizeModule('lfs')
+	--sanitizeModule('io')
+	--sanitizeModule('lfs')
 	require = nil
 	loadlib = nil
 end

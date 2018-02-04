@@ -71,7 +71,7 @@ do
 			
 			slmod.update_exempt_clients() -- creates the file.
 		end
-	end
+	end	
 	----------------------------------------------------------------------------------------
 	-- clientInfo = {ucid = string, name = string, ip = string}, --adminInfo = {ucid = string, name = string} OR 'autoban', expTime -expiration time, optional.... ALL variables optional, called with nothing, it just re-serializes the file.
 	function slmod.update_banned_clients(clientInfo, adminInfo, expTime)  -- adds a banned client   -- NO LONGER LOCAL
@@ -177,12 +177,12 @@ do
         ['Normandy'] = 'NO',
         ['PersianGulf'] = 'PG',
     }
-    --- just in case someone screws it up
+    --- just in case someone screws it up	
 	----------------------------------------------------------------------------------------
 	local function create_LoadMissionMenuFor(id)  --creates the temporary load mission menu for this client id.
 		local path
-		local mStats = slmod.stats.getMetaStats()
-        if slmod.config.admin_tools_mission_folder and type(slmod.config.admin_tools_mission_folder) == 'string' then
+		local mStats = slmod.stats.getMetaStats()										   
+		if slmod.config.admin_tools_mission_folder and type(slmod.config.admin_tools_mission_folder) == 'string' then
 			path = slmod.config.admin_tools_mission_folder
 			if (path:sub(-1) ~= '\\') or (path:sub(-1) ~= '/') then
 				path = path .. '\\'
@@ -213,8 +213,8 @@ do
 		slmod.scheduleFunctionByRt(SlmodMenu.destroy, {LoadMenu}, DCS.getRealTime() + 120)  --scheduling self-destruct of this menu in two minutes.
 		
 		local miz_cntr = 1
-        for file in lfs.dir(path) do
-            if file:sub(-4) == '.miz' then
+		for file in lfs.dir(path) do
+			if file:sub(-4) == '.miz' then
 				local mapName = ''
                 local sName = string.gsub(file, '%.miz', '')
                 if mStats and mStats.missionStats then
@@ -223,10 +223,10 @@ do
                             mapName = mapStrings[mStats.missionStats[sName].map]
                         end
                     end
-                end
-                local LoadVars = {}
+                end					  
+				local LoadVars = {}
 				LoadVars.menu = LoadMenu
-				LoadVars.description = 'Mission ' .. tostring(miz_cntr) .. ' -' .. mapName .. ': "' .. file .. '", say in chat "-load ' .. tostring(miz_cntr) .. '" to load this mission.'
+				LoadVars.description = tostring(miz_cntr) .. ': "' .. file .. '",- "-load ' .. tostring(miz_cntr)
 				LoadVars.active = true
 				LoadVars.filename = file
 				LoadVars.options = {display_mode = 'chat', display_time = 5, privacy = {access = true, show = true}}
@@ -310,7 +310,7 @@ do
 					if id ~= 1 and client.name then
 						local idBanVars = {}
 						idBanVars.menu = self
-						idBanVars.description = '"' .. client.name  ..'"; say in chat "-admin id ban ' .. tostring(id) .. '" to ban this player from the server.'
+						idBanVars.description = '"' .. client.name  ..'"; "-admin id ban ' .. tostring(id) .. '" to ban this player from the server.'
 						idBanVars.active = true
 						idBanVars.id = id
 						idBanVars.name = client.name
@@ -388,7 +388,7 @@ do
 					if id ~= 1 and client.name then
 						local idKickVars = {}
 						idKickVars.menu = self
-						idKickVars.description = '"' .. client.name  ..'"; say in chat "-admin id kick ' .. tostring(id) .. '" to kick this player from the server.'
+						idKickVars.description = '"' .. client.name  ..'"; "-admin id kick ' .. tostring(id) .. '" to kick this player from the server.'
 						idKickVars.active = true
 						idKickVars.id = id
 						idKickVars.name = client.name
@@ -521,7 +521,7 @@ do
 			
 			end,  -- end of the updateKickItems
 		} -- end of local idKickMenu = SlmodMenu.create{
-		
+				
 		local function update_scope()  -- called to continuously update scope of Admin Menu and its submenus.
 			if SlmodAdminMenu then
 				local newscope = {clients = {1}}
@@ -590,7 +590,7 @@ do
 		-- first item, kicking.
 		local AdminKickVars = {}
 		AdminKickVars.menu = SlmodAdminMenu
-		AdminKickVars.description = 'Say in chat "-admin kick <player name>" to kick a player from the server.'
+		AdminKickVars.description = '"-admin kick <player>" to kick a player.'
 		AdminKickVars.active = true
 		AdminKickVars.options = {display_mode = 'chat', display_time = 5, privacy = {access = true, show = true}}
 		AdminKickVars.selCmds = {
@@ -641,7 +641,7 @@ do
 		-- second item, kick by id submenu
 		local adminIdKickVars = {}
 		adminIdKickVars.menu = SlmodAdminMenu
-		adminIdKickVars.description = 'Say in chat "-admin id kick" to view the kick-by-client-ID submenu.'
+		adminIdKickVars.description = '"-admin id kick" to view the kick-by-client-ID submenu.'
 		adminIdKickVars.active = true
 		adminIdKickVars.options = {display_mode = 'chat', display_time = 5, privacy = {access = true, show = true}}
 		adminIdKickVars.selCmds = {
@@ -677,7 +677,7 @@ do
 		-- third item, banning.
 		local AdminBanVars = {}
 		AdminBanVars.menu = SlmodAdminMenu
-		AdminBanVars.description = 'Say in chat "-admin ban <player name>" to ban a player from the server.'
+		AdminBanVars.description = '"-admin ban <player>" to ban a player.'
 		AdminBanVars.active = true
 		AdminBanVars.options = {display_mode = 'chat', display_time = 5, privacy = {access = true, show = true}}
 		AdminBanVars.selCmds = {
@@ -729,7 +729,7 @@ do
 		-- forth item, ban by id submenu
 		local adminIdBanVars = {}
 		adminIdBanVars.menu = SlmodAdminMenu
-		adminIdBanVars.description = 'Say in chat "-admin id ban" to view the ban-by-client-ID submenu.'
+		adminIdBanVars.description = '"-admin id ban" to view the ban-by-client-ID submenu.'
 		adminIdBanVars.active = true
 		adminIdBanVars.options = {display_mode = 'chat', display_time = 5, privacy = {access = true, show = true}}
 		adminIdBanVars.selCmds = {
@@ -763,7 +763,7 @@ do
 		-- fifth item, unbanning.
 		local AdminUnbanVars = {}
 		AdminUnbanVars.menu = SlmodAdminMenu
-		AdminUnbanVars.description = 'Say in chat "-admin unban <player name>" to unban a player from the server.'
+		AdminUnbanVars.description = '"-admin unban <player>" to unban a player.'
 		AdminUnbanVars.active = true
 		AdminUnbanVars.options = {display_mode = 'chat', display_time = 5, privacy = {access = true, show = true}}
 		AdminUnbanVars.selCmds = {
@@ -832,7 +832,7 @@ do
 		-- forth item, add an admin.
 		local AddAdminVars = {}
 		AddAdminVars.menu = SlmodAdminMenu
-		AddAdminVars.description = 'Say in chat "-admin add <player name>" to add a currently connected player to the list of server admins.'
+		AddAdminVars.description = '"-admin add <player>" to add a currently connected player to the list of server admins.'
 		AddAdminVars.active = true
 		AddAdminVars.options = {display_mode = 'chat', display_time = 5, privacy = {access = true, show = true}}
 		AddAdminVars.selCmds = {
@@ -886,7 +886,7 @@ do
 		-- fifth item, remove an admin.
 		local RemoveAdminVars = {}
 		RemoveAdminVars.menu = SlmodAdminMenu
-		RemoveAdminVars.description = 'Say in chat "-admin remove <player name>" to remove a player from the list of server admins.'
+		RemoveAdminVars.description = '"-admin remove <player>" to remove a player from the list of server admins.'
 		RemoveAdminVars.active = true
 		RemoveAdminVars.options = {display_mode = 'chat', display_time = 5, privacy = {access = true, show = true}}
 		RemoveAdminVars.selCmds = {
@@ -942,7 +942,7 @@ do
 		-- sixth item, toggle pause
 		local TogglePauseVars = {}
 		TogglePauseVars.menu = SlmodAdminMenu
-		TogglePauseVars.description = 'Say in chat "-admin pause" to toggle pause on/off.'
+		TogglePauseVars.description = '"-admin pause" to toggle pause on/off.'
 		TogglePauseVars.active = true
 		TogglePauseVars.options = {display_mode = 'chat', display_time = 5, privacy = {access = true, show = true}}
 		TogglePauseVars.selCmds = {
@@ -1004,7 +1004,7 @@ do
 		if slmod.config.pause_when_empty then
 			local PauseOverrideVars = {}
 			PauseOverrideVars.menu = SlmodAdminMenu
-			PauseOverrideVars.description = 'Say in chat "-admin override pause" to temporarily enable/disable the server pause when empty feature.'
+			PauseOverrideVars.description = '"-admin override pause" to temporarily enable/disable the server pause when empty feature.'
 			PauseOverrideVars.active = true
 			PauseOverrideVars.options = {display_mode = 'chat', display_time = 5, privacy = {access = true, show = true}}
 			PauseOverrideVars.selCmds = {
@@ -1077,7 +1077,7 @@ do
 		-- seventh item, reload mission
 		local ReloadVars = {}
 		ReloadVars.menu = SlmodAdminMenu
-		ReloadVars.description = 'Say in chat "-admin restart" to restart the current mission.'
+		ReloadVars.description = '"-admin restart" to restart the current mission.'
 		ReloadVars.active = true
 		ReloadVars.options = {display_mode = 'chat', display_time = 5, privacy = {access = true, show = true}}
 		ReloadVars.selCmds = {
@@ -1119,9 +1119,9 @@ do
 			else
 				AdminName = '!UNKNOWN ADMIN!' -- should NEVER get to this.
 			end
-
+			
 			slmod.scheduleFunctionByRt(slmod.basicChat, {'Slmod: admin "' .. AdminName .. '" is restarting the mission.'}, DCS.getRealTime() + 0.1)  -- scheduled so that reply from Slmod appears after your chat message.
-			slmod.scheduleFunctionByRt(net.load_mission, {DCS.getMissionFilename()}, DCS.getRealTime() + 5)
+			slmod.scheduleFunctionByRt(net.load_mission, {slmod.current_mission}, DCS.getRealTime() + 5)
 		end
 		
 		AdminItems[#AdminItems + 1] = SlmodMenuItem.create(ReloadVars)  -- add the item into the items table.
@@ -1130,7 +1130,7 @@ do
 		-- eighth item, load a mission
 		local LoadMisVars = {}
 		LoadMisVars.menu = SlmodAdminMenu
-		LoadMisVars.description = 'Say in chat "-admin load" to load a new mission from a list of available missions.'
+		LoadMisVars.description = '"-admin load" to load a new mission from a list of available missions.'
 		LoadMisVars.active = true
 		LoadMisVars.options = {display_mode = 'chat', display_time = 5, privacy = {access = true, show = true}}
 		LoadMisVars.selCmds = {
@@ -1165,7 +1165,7 @@ do
 		-- ninth item, enable/disable stats
 		local toggleStatsVars = {}
 		toggleStatsVars.menu = SlmodAdminMenu
-		toggleStatsVars.description = 'Say in chat "-admin toggle stats" to toggle SlmodStats stats recording on/off.'
+		toggleStatsVars.description = '"-admin toggle stats" to toggle SlmodStats stats recording on/off.'
 		toggleStatsVars.active = true
 		toggleStatsVars.options = {display_mode = 'chat', display_time = 5, privacy = {access = true, show = true}}
 		toggleStatsVars.selCmds = {
@@ -1215,7 +1215,7 @@ do
         --==================
         local AdminAlertVars = {}
 		AdminAlertVars.menu = SlmodAdminMenu
-		AdminAlertVars.description = 'Say in chat "-admin alert <message>" to display an admin message in chat and triggered messages'
+		AdminAlertVars.description = '"-admin alert <message>" to display an admin message in chat and triggered messages'
 		AdminAlertVars.active = true
 		AdminAlertVars.options = {display_mode = 'chat', display_time = 5, privacy = {access = true, show = true}}
 		AdminAlertVars.selCmds = {
@@ -1255,17 +1255,17 @@ do
                 for w in string.gmatch(message, "%w+") do
                     displayTime = displayTime + .6
                 end
-                local msg = 'Admin Alert Message From: ' .. AdminName .. '\n\n' .. message
-                slmod.msg_out_net(msg, displayTime, 'echo')
+            local msg = 'Admin Message From: ' .. AdminName .. '\n\n' .. message           
+			slmod.msg_out_net(msg, displayTime, 'echo')																						  
             end
             
-           
+
 
 
 		end
 		
 		AdminItems[#AdminItems + 1] = SlmodMenuItem.create(AdminAlertVars)  -- add the item into the items table.
-        
+		
         ----------------
         -- Admin "Bump" or kick to spectators script. 
         local AdminBumpVars = {}
@@ -1533,7 +1533,7 @@ do
 		update_scope()   -- keep scope updated with all connected server admins.
 	end
 	
-    
+
 	------------------------------------------------------------------------------------------------------------
 	------------------------------------------------------------------------------------------------------------
 	------------------------------------------------------------------------------------------------------------
@@ -1633,10 +1633,10 @@ do
 		end
 		
 		AdminRegisterItems[1] = SlmodMenuItem.create(AdminRegisterVars)  -- add the item into the items table.
-          
+
 
 	end
-    
+
 	------------------------------------------------------------------------------------------------------------
 	------------------------------------------------------------------------------------------------------------
 	-- function(s) to get private data about AdminMenu.

@@ -255,7 +255,7 @@ end
 			slmod.doTasks()
 
 			
-			if slmod.mission_started == true then
+			if slmod.mission_started then
 				slmod.reset()
 				slmod.mission_started = false
 				slmod.importMissionZones()
@@ -293,7 +293,7 @@ end
 				slmod.updateClients()
 
 				-- Check pings
-				if slmod.config.pingcheck_conf.enabled == true then
+				if slmod.pingCheck.config.enabled then
 					slmod.pingCheck.heartbeat()
 				end
 				
@@ -372,12 +372,12 @@ end
 -- redefine on_mission
 --slmod.func_old.on_mission = slmod.func_old.on_mission or onMissionLoadBegin --onMissionLoadBegin
 function slmodCall.onMissionLoadBegin()
+	
 	slmod.current_mission = DCS.getMissionName()
-    slmod.current_map = DCS.getCurrentMission().mission.theatre
 	slmod.mission_start_time = DCS.getRealTime()  --needed to prevent CTD caused by C Lua API on net.pause and net.resume
 	slmod.mission_started = true
 	slmod.do_once_code = true
-
+	
 	-- flush out the udp port if there is anything left.
 	if slmod.udp then
 		repeat
@@ -389,8 +389,8 @@ function slmodCall.onMissionLoadBegin()
 end
 
 --slmod.func_old.onPlayerTrySendChat = slmod.func_old.onPlayerTrySendChat or onPlayerTrySendChat -- old_on_chat should be an upvalue of on_chat, using the "or" just in case I make a reload_slmod work again
-local lastLogLine = '' 
 function slmodCall.onPlayerTrySendChat(id, msg, all)  --new definition
+	--net.log('chat: ' .. msg)
 	local function cut_tail_spaces(str)
 		local tail = string.find(str, '%s+$')  -- find where trailing spaces start
 		if tail then
@@ -406,12 +406,11 @@ function slmodCall.onPlayerTrySendChat(id, msg, all)  --new definition
 	
 	--new functionality
 	local suppress = slmod.doMenuCommands(id, realString)
-    --TODO ADD CHECK TO SEE IF HOST IS SPAMMING
-	if slmod.chatLogFile and slmod.clients[id]  then  -- client better exist in slmod clients!
+
+	if slmod.chatLogFile and slmod.clients[id] then  -- client better exist in slmod clients!
 		local clientInfo = table.concat({'{name  = ', slmod.basicSerialize(tostring(slmod.clients[id].name)), ', ucid = ', slmod.basicSerialize(tostring(slmod.clients[id].ucid)), ', ip = ',  slmod.basicSerialize(tostring(slmod.clients[id].addr)), ', id = ', tostring(id),  '}'})
 
 		local logline
-        local writeLog = true
 		if realString ~= '/mybad' then
 			logline = 'CHAT: ' .. os.date('%b %d %H:%M:%S ') .. clientInfo .. ' said "' .. realString .. '"'
 			if all then
@@ -428,20 +427,9 @@ function slmodCall.onPlayerTrySendChat(id, msg, all)  --new definition
 		else
 			logline = 'SCREENSHOT: ' .. os.date('%b %d %H:%M:%S ') .. clientInfo .. ' made a screenshot.\n'
 		end
-
-        if lastLogLine == logline then -- if the last written message is identical to this one, then don't write to the log
-            lastLogLine = logline
-        end
-        if id == 1 and slmod.config.log_only_important_server_messages then -- useful slmod messages start with Slmod: or Slmod-. All other messages from host will be removed from chat lot
-           writeLog = false
-           if (string.find(logline, 'Slmod:') and string.find(logline, 'Slmod:') < 2) or (string.find(logline, 'Slmod%-') and string.find(logline, 'Slmod%-') < 2) then
-              writeLog = true
-           end
-        end
-        if writeLog == true or suppress == true then
-            slmod.chatLogFile:write(logline)
-            slmod.chatLogFile:flush()
-        end
+		
+		slmod.chatLogFile:write(logline)
+		slmod.chatLogFile:flush()
 	elseif not slmod.clients[id] then
 		slmod.error('chat message from non-existent client in slmod.clients!')
 	end
@@ -456,8 +444,8 @@ end
 -----------------------------------------------------------------------------------------
 --modify on_connect
 --slmod.func_old.on_connect = slmod.func_old.on_connect or onPlayerConnect
-function slmodCall.onPlayerConnect(id)
-	slmod.info('connected client ' .. id)
+function slmodCall.onPlayerConnect(id, name)
+	--net.log('onConnect')
 	slmod.clients = slmod.clients or {} --should not be necessary.
 	slmod.clients[id] = {id = id, addr = net.get_player_info(id, 'ipaddr'), name = net.get_player_info(id, 'name'), ucid = net.get_player_info(id, 'ucid'), ip = net.get_player_info(id, 'ipaddr')}
 	
@@ -466,9 +454,6 @@ function slmodCall.onPlayerConnect(id)
 	else
 		slmod.num_clients = slmod.num_clients + 1
 	end
-    if slmod.config.pingcheck_conf.enabled then 
-        slmod.pingCheck.addClient(id)
-    end
 	return --slmod.func_old.on_connect(id)
 end 
 
@@ -500,18 +485,16 @@ function slmodCall.onPlayerChangeSlot(id)
 	--net.log('on change slot')
 	if slmod.stats.onSetUnit then
 			slmod.stats.onSetUnit(id)
-	end
+		end
 
-    if SlmodMOTDMenu then  -- right now, simple MOTD- send it to player when they select unit.
-        if slmod.clients[id] and (not slmod.clients[id].motdTime or DCS.getRealTime() - slmod.clients[id].motdTime > 5) then
-            slmod.clients[id].motdTime = DCS.getRealTime()
-            slmod.scheduleFunctionByRt(SlmodMOTDMenu.show, {SlmodMOTDMenu, id, {clients = {id}}}, DCS.getRealTime() + 0.1)
-        end
-    end
-    if slmod.config.pingcheck_conf.enabled then 
-        slmod.pingCheck.setActive(id)
-    end
-	return --slmod.func_old.on_set_unit(id)
+		if SlmodMOTDMenu then  -- right now, simple MOTD- send it to player when they select unit.
+			if slmod.clients[id] and (not slmod.clients[id].motdTime or DCS.getRealTime() - slmod.clients[id].motdTime > 5) then
+				slmod.clients[id].motdTime = DCS.getRealTime()
+				slmod.scheduleFunctionByRt(SlmodMOTDMenu.show, {SlmodMOTDMenu, id, {clients = {id}}}, DCS.getRealTime() + 0.1)
+			end
+		end
+		
+		return --slmod.func_old.on_set_unit(id)
 end
 
 --modify on_disconnect
@@ -519,7 +502,7 @@ end
 function slmodCall.onPlayerDisconnect(id, err)
 	slmod.clients = slmod.clients or {}  --should not be necessary.
 	if slmod.clients[id] then
-        slmod.clients[id] = nil
+		slmod.clients[id] = nil
 		slmod.num_clients = slmod.num_clients - 1
 	end
 

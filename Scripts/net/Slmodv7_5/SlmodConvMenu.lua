@@ -334,7 +334,7 @@ function slmod.create_ConvMenu()
 	
 	-- Create the items
 	local item1vars = {}
-	item1vars.description = 'Say in chat "-conv <coordinate> to <desired coordinate system>".\nAccepted coordinate systems are LL, MGRS, BR (bearing and range from your aircraft), and BULLS (bearing and range from bullseye).\nNot case sensitive. See the extended help (option 2 on this menu) for more info and examples.'
+	item1vars.description = 'Say "-conv <coordinate> to <desired coordinate system>".\nAccepted coordinate systems are LL, MGRS, BR (bearing and range from your aircraft), and BULLS (bearing and range from bullseye).\nNot case sensitive. See the extended help (option 2 on this menu) for more info and examples.'
 	item1vars.active = true
 	item1vars.options = {display_mode = 'chat', display_time = 5, privacy = {access = true, show = true}}
 	item1vars.selCmds = {
@@ -391,7 +391,7 @@ function slmod.create_ConvMenu()
 		slmod.scheduleFunctionByRt(slmod.scopeMsg, {helptext, self.options.display_time or 60, self.options.display_mode or 'text', show_scope}, DCS.getRealTime() + 0.1)
 	end
 	
-	item2vars.description = 'Say in chat "-conv help" to see extended help text on the coordinate converter (*CAUTION* Will be sent to you as trigger text- but only you will see it).'
+	item2vars.description = 'Say "-conv help" to see extended help text on the coordinate converter (*CAUTION* Will be sent to you as trigger text- but only you will see it).'
 	item2vars.active = true
 	item2vars.options = {display_mode = 'text', display_time = 60, privacy = {access = true, show = true}}
 	item2vars.selCmds = {

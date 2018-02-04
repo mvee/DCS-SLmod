@@ -236,8 +236,8 @@ if slmod.config.MOTD_enabled then
 			end
 			
 			if slmod.config.admin_tools and SlmodAdminMenu and clientId and slmod.clientInScope(clientId, SlmodAdminMenu:getScope()) then
-				titleTbl[#titleTbl + 1] = '\nYou are registered as a server admin.  Say "-admin" in chat to access the Admin menu.'
-				--title =  title ..'You are registered as a server admin.  Say "-admin" in chat to access the Admin menu.'
+				titleTbl[#titleTbl + 1] = '\nYou are registered as a server admin.  "-admin" in chat to access the Admin menu.'
+				--title =  title ..'You are registered as a server admin.  "-admin" in chat to access the Admin menu.'
 			end
 			
 			local chatKey = getChatKey(clientId)

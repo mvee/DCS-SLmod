@@ -2674,14 +2674,14 @@ function slmod.reset()
 	--slmod.save_var('net', 'unitCategories.txt', slmod.unitCategories, 'slmod.unitCategories')
 
 	if slmod.stats.reset then  -- if this function doesn't exist, then slmod stats are completely disabled.
-        slmod.stats.reset()
-        slmod.stats.resetFile()
-        slmod.stats.createGetStatsUnitInfo()
-        slmod.stats.create_weaponIsActive()
-        slmod.stats.create_unitIsStationary()
-        slmod.stats.create_unitIsAlive()
-        slmod.stats.trackFlightTimes()  -- start tracking times.
-        slmod.stats.trackMissionTimes()
+		slmod.stats.reset()
+		slmod.stats.resetFile()
+		slmod.stats.createGetStatsUnitInfo()
+		slmod.stats.create_weaponIsActive()
+		slmod.stats.create_unitIsStationary()
+		slmod.stats.create_unitIsAlive()
+		slmod.stats.trackFlightTimes()  -- start tracking times.
+       slmod.stats.trackMissionTimes()
         slmod.create_SlmodStatsMenu()
 
 		slmod.stats.onMission()

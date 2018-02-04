@@ -69,23 +69,23 @@ do
 		
 		]]
 		SlmodHelpMenu.show = function(self, clientId, show_scope)  -- updates the "title" of this not-menu.
-			local title = 'Slmod Help Menu\nThese are the active Slmod menus accessible to you:\n'
+			local title = 'Help Menu\nMenus accessible to you:\n'
 			if slmod.config.admin_tools and SlmodAdminMenu and clientId and slmod.clientInScope(clientId, SlmodAdminMenu:getScope()) then
-				title = title..'- Slmod Server Admin Menu (' .. tostring(#SlmodAdminMenu:getItems()) .. ' items) - show this menu by saying "-admin" in chat.\n'
+				title = title..'- "-admin" Server Admin Menu (' .. tostring(#SlmodAdminMenu:getItems()) .. ' items)\n'
 			end
 			
 			if SlmodStatsMenu then  -- Maybe in future, allow users to turn it off.
-				title = title..'- SlmodStats multiplayer statistics viewer/menu (' .. tostring(#SlmodStatsMenu:getItems()) .. ' items) - show this menu by saying "-stats" in chat.\n'
+				title = title..'- "-stats" Multiplayer statistics viewer/menu (' .. tostring(#SlmodStatsMenu:getItems()) .. ' items)\n'
 			end
 			
 			if slmod.config.MOTD_enabled then
-				title = title..'- Server Message of the Day (MOTD), show by saying "-motd" in chat.\n'
+				title = title..'- "-motd" Message of the Day (MOTD)\n'
 			end
 			
 			if slmod.config.coord_converter and slmod.ConvMenu then
-				title = title..'- Slmod Coordinate Conversion Utility (' .. tostring(#slmod.ConvMenu:getItems()) .. ' items), show by saying "-conv" in chat.\n'
+				title = title..'- "-conv" Coordinate Conversion Utility (' .. tostring(#slmod.ConvMenu:getItems()) .. ' items)\n'
 			end
-            
+		
             if slmod.config.autoAdmin.forgiveEnabled or slmod.config.autoAdmin.forgiveEnabled then
                title = title..'- Slmod Forgive/Punish (' .. tostring(#SlmodForgivePunishMenu:getItems()) .. ' items), show by saying "-forgive" or "-punish" in chat. \n'
             end
@@ -93,7 +93,7 @@ do
             if slmod.config.voteConfig.enabled then
                title = title..'- Slmod Voting (' .. tostring(#SlmodVoteMenu:getItems()) .. ' items), show by saying "-vote" in chat. \n'
             end
-			
+					
 			local clientPOS
 			local clientSide = slmod.getClientSide(clientId)
 			if clientSide == 'red' then
@@ -114,7 +114,7 @@ do
 			if clientPTS then
 				title = title..'- Parallel Tasking System (' .. tostring(#clientPTS:getItems()) .. ' items), show by saying "-stl" in chat.\n'
 			end
-			
+		
 			self.options.title = title
 
 			SlmodMenu.show(self, clientId, show_scope)
