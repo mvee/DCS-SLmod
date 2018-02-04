@@ -71,7 +71,7 @@ do
 			
 			slmod.update_exempt_clients() -- creates the file.
 		end
-	end	
+	end
 	----------------------------------------------------------------------------------------
 	-- clientInfo = {ucid = string, name = string, ip = string}, --adminInfo = {ucid = string, name = string} OR 'autoban', expTime -expiration time, optional.... ALL variables optional, called with nothing, it just re-serializes the file.
 	function slmod.update_banned_clients(clientInfo, adminInfo, expTime)  -- adds a banned client   -- NO LONGER LOCAL
@@ -177,11 +177,11 @@ do
         ['Normandy'] = 'NO',
         ['PersianGulf'] = 'PG',
     }
-    --- just in case someone screws it up	
+    --- just in case someone screws it up
 	----------------------------------------------------------------------------------------
 	local function create_LoadMissionMenuFor(id)  --creates the temporary load mission menu for this client id.
 		local path
-		local mStats = slmod.stats.getMetaStats()										   
+		local mStats = slmod.stats.getMetaStats()									   
 		if slmod.config.admin_tools_mission_folder and type(slmod.config.admin_tools_mission_folder) == 'string' then
 			path = slmod.config.admin_tools_mission_folder
 			if (path:sub(-1) ~= '\\') or (path:sub(-1) ~= '/') then
@@ -223,7 +223,7 @@ do
                             mapName = mapStrings[mStats.missionStats[sName].map]
                         end
                     end
-                end					  
+                end
 				local LoadVars = {}
 				LoadVars.menu = LoadMenu
 				LoadVars.description = tostring(miz_cntr) .. ': "' .. file .. '",- "-load ' .. tostring(miz_cntr)
@@ -521,7 +521,7 @@ do
 			
 			end,  -- end of the updateKickItems
 		} -- end of local idKickMenu = SlmodMenu.create{
-				
+
 		local function update_scope()  -- called to continuously update scope of Admin Menu and its submenus.
 			if SlmodAdminMenu then
 				local newscope = {clients = {1}}
@@ -1119,7 +1119,6 @@ do
 			else
 				AdminName = '!UNKNOWN ADMIN!' -- should NEVER get to this.
 			end
-			
 			slmod.scheduleFunctionByRt(slmod.basicChat, {'Slmod: admin "' .. AdminName .. '" is restarting the mission.'}, DCS.getRealTime() + 0.1)  -- scheduled so that reply from Slmod appears after your chat message.
 			slmod.scheduleFunctionByRt(net.load_mission, {DCS.getMissionFilename()}, DCS.getRealTime() + 5)
 		end
@@ -1255,8 +1254,8 @@ do
                 for w in string.gmatch(message, "%w+") do
                     displayTime = displayTime + .6
                 end
-            local msg = 'Admin Message From: ' .. AdminName .. '\n\n' .. message           
-			slmod.msg_out_net(msg, displayTime, 'echo')																						  
+            local msg = 'Admin Message From: ' .. AdminName .. '\n\n' .. message
+			slmod.msg_out_net(msg, displayTime, 'echo')																				  
             end
             
 
@@ -1265,7 +1264,7 @@ do
 		end
 		
 		AdminItems[#AdminItems + 1] = SlmodMenuItem.create(AdminAlertVars)  -- add the item into the items table.
-		
+
         ----------------
         -- Admin "Bump" or kick to spectators script. 
         local AdminBumpVars = {}
