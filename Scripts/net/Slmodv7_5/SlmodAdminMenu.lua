@@ -1121,7 +1121,7 @@ do
 			end
 			
 			slmod.scheduleFunctionByRt(slmod.basicChat, {'Slmod: admin "' .. AdminName .. '" is restarting the mission.'}, DCS.getRealTime() + 0.1)  -- scheduled so that reply from Slmod appears after your chat message.
-			slmod.scheduleFunctionByRt(net.load_mission, {slmod.current_mission}, DCS.getRealTime() + 5)
+			slmod.scheduleFunctionByRt(net.load_mission, {DCS.getMissionFilename()}, DCS.getRealTime() + 5)
 		end
 		
 		AdminItems[#AdminItems + 1] = SlmodMenuItem.create(ReloadVars)  -- add the item into the items table.
@@ -1270,7 +1270,7 @@ do
         -- Admin "Bump" or kick to spectators script. 
         local AdminBumpVars = {}
 		AdminBumpVars.menu = SlmodAdminMenu
-		AdminBumpVars.description = 'Say in chat "-admin spec <player name>" to kick a player to spectators.'
+		AdminBumpVars.description = '"-admin spec <player name>" to kick a player to spectators.'
 		AdminBumpVars.active = true
 		AdminBumpVars.options = {display_mode = 'chat', display_time = 5, privacy = {access = true, show = true}}
 		AdminBumpVars.selCmds = {
@@ -1321,7 +1321,7 @@ do
 		      
         local adminIdSpecVars = {}
 		adminIdSpecVars.menu = SlmodAdminMenu
-		adminIdSpecVars.description = 'Say in chat "-admin id spec" to view the kick-by-client-ID submenu.'
+		adminIdSpecVars.description = '"-admin id spec" to view the kick-by-client-ID submenu.'
 		adminIdSpecVars.active = true
 		adminIdSpecVars.options = {display_mode = 'chat', display_time = 5, privacy = {access = true, show = true}}
 		adminIdSpecVars.selCmds = {
@@ -1357,7 +1357,7 @@ do
         -----------------------------------------------------------------------------------------------
         local toggleVoteVars = {}
 		toggleVoteVars.menu = SlmodAdminMenu
-		toggleVoteVars.description = 'Say in chat "-admin toggle vote" to toggle Mission voting on/off.'
+		toggleVoteVars.description = '"-admin toggle vote" to toggle Mission voting on/off.'
 		toggleVoteVars.active = true
 		toggleVoteVars.options = {display_mode = 'chat', display_time = 5, privacy = {access = true, show = true}}
 		toggleVoteVars.selCmds = {
@@ -1404,7 +1404,7 @@ do
 
         local voteStartVars = {}
 		voteStartVars.menu = SlmodAdminMenu
-		voteStartVars.description = 'Say in chat "-admin vote start" to start a mission vote.'
+		voteStartVars.description = '"-admin vote start" to start a mission vote.'
 		voteStartVars.active = true
 		voteStartVars.options = {display_mode = 'chat', display_time = 5, privacy = {access = true, show = true}}
 		voteStartVars.selCmds = {
@@ -1446,7 +1446,7 @@ do
 
         local voteStopVars = {}
 		voteStopVars.menu = SlmodAdminMenu
-		voteStopVars.description = 'Say in chat "-admin vote stop" the current vote. Vote timeouts will be reset. '
+		voteStopVars.description = '"-admin vote stop" the current vote. Vote timeouts will be reset. '
 		voteStopVars.active = true
 		voteStopVars.options = {display_mode = 'chat', display_time = 5, privacy = {access = true, show = true}}
 		voteStopVars.selCmds = {
@@ -1489,7 +1489,7 @@ do
         if slmod.config.voteConfig.requireAdminVerifyIfPresent then
             local voteAllowVars = {}
             voteAllowVars.menu = SlmodAdminMenu
-            voteAllowVars.description = 'Say in chat "-admin vote allow" to allow for the current vote or results to proceed.'
+            voteAllowVars.description = '"-admin vote allow" to allow for the current vote or results to proceed.'
             voteAllowVars.active = true
             voteAllowVars.options = {display_mode = 'chat', display_time = 5, privacy = {access = true, show = true}}
             voteAllowVars.selCmds = {
